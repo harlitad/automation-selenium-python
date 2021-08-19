@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.select import Select
 import time
 
 
@@ -138,9 +139,41 @@ def test_progress_bar(driver):
         assert driver.find_element(
             By.CSS_SELECTOR, ".progress-bar").get_attribute("aria-valuenow") == set_value
 
+
 def test_accordian(driver):
     driver.get("https://demoqa.com/accordian")
     section1 = driver.find_element(By.ID, "section1Heading")
     section2 = driver.find_element(By.ID, "section2Heading")
     section2.click()
     section2.find_element(By.CSS_SELECTOR, ".collapse.show")
+
+# def test_datepicker_send_keys(driver):
+#     driver.get("https://demoqa.com/date-picker")
+#     date_input = driver.find_element(By.ID, "datePickerMonthYearInput")
+#     date_input.send_keys('03/01/2021')
+#     time.sleep(10)
+
+
+def test_datepicker(driver):
+    driver.get("https://demoqa.com/date-picker")
+    input_date = driver.find_element(By.ID, ("datePickerMonthYearInput"))
+    input_date.click()
+
+    month = driver.find_element(By.CSS_SELECTOR, (".react-datepicker__month-select"))
+    month.click()
+    select_month = Select(month)
+    select_month.select_by_visible_text("June")
+
+    year = driver.find_element(By.CSS_SELECTOR, (".react-datepicker__year-select"))
+    year.click()
+    select_year = Select(year)
+    select_year.select_by_visible_text("2021")
+    set_date = "23"
+    # XPATH lebih spesifik, kurang fleksibel
+    # date = driver.find_element(By.XPATH, "//div[contains(text(),'"+ set_date +"')]")
+    date = driver.find_element(By.CSS_SELECTOR, f'.react-datepicker__day.react-datepicker__day--0{set_date}')
+    date.click()
+    
+    time.sleep(100)
+
+
